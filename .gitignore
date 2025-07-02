@@ -1,0 +1,17 @@
+.env
+
+node_modules/
+dist/
+build/
+coverage/
+partials/
+emails/
+/prisma
+
+.vscode/
+
+.docker/
+
+git-example-rebase.txt
+
+samba/
