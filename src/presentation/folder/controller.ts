@@ -16,12 +16,16 @@ export class FolderController {
 
     const { filename } = req.params;
 
-    if( filename.startsWith( '..' )) res.status(400).json({ msg: 'Autoshop: filename dont start with ..' });
+    if( filename.startsWith( '..' )) {
+      res.status(400).json({ msg: 'Autoshop: filename dont start with ..' });
+    }
 
     const requestedFilePath = path.join(envs.EXTERNAL_FILE_PATH, filename);
     const normalizedPath = path.normalize( requestedFilePath );
 
-    if( !normalizedPath.startsWith( envs.EXTERNAL_FILE_PATH )) res.status(403).json({ msg: 'Autoshop: Acceso denegado: Intento de path traversal.'});
+    if( !normalizedPath.startsWith( envs.EXTERNAL_FILE_PATH )) {
+      res.status(403).json({ msg: 'Autoshop: Acceso denegado: Intento de path traversal.'});
+    }
 
     try {
 
@@ -32,9 +36,8 @@ export class FolderController {
       res.download( normalizedPath, (err) => {
 
         if( err ) {
-          
-          res.status(404).send('Autoshop: File dont exist')
-        } else { res.status(500).send('Autoshop: Server internal error') }
+          console.error(`Error durante la transmisión del archivo ${normalizedPath}:`, err);  
+        }
       })
 
     } catch (error) {
